@@ -16,6 +16,8 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 
+import com.ndroid.backend.security.GithubOAuth2UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -23,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final GithubOAuth2UserService githubOAuth2UserService;
     private final AuthenticationSuccessHandler oauth2SuccessHandler;
     private final AuthenticationFailureHandler oauth2FailureHandler;
 
@@ -40,9 +43,9 @@ public class SecurityConfig {
                         .anyRequest().permitAll())
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(oauth -> oauth.userInfoEndpoint(userInfo -> userInfo
-                        .userService(gitHubOAuth2UserService)
+                        .userService(githubOAuth2UserService))
                         .successHandler(oauth2SuccessHandler)
-                        .failureHandler(oauth2FailureHandler)))
+                        .failureHandler(oauth2FailureHandler))
                 .logout(logout -> logout.logoutUrl("/api/auth/logout")
                         .logoutSuccessHandler((request, response, authentication) -> response
                                 .setStatus(HttpStatus.NO_CONTENT.value()))

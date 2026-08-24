@@ -1,0 +1,19 @@
+package com.ndroid.backend.config;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.encrypt.Encryptors;
+import org.springframework.security.crypto.encrypt.TextEncryptor;
+
+@Configuration
+public class CryptoConfig {
+
+    @SuppressWarnings("deprecation")
+    @Bean
+    TextEncryptor textEncryptor(@Value("${app.token-encrypter-password}") String password,
+                                @Value("${app.token-encrypter-salt}") String salt) {
+                                    
+        return Encryptors.text(password, salt);
+    }
+}
