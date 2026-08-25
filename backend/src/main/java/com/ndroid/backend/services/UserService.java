@@ -29,7 +29,7 @@ public class UserService {
 
         String encryptedToken = textEncryptor.encrypt(accessToken);
 
-        User user = userRepository.findbyGithubId(githubId).orElseGet(User::new);
+        User user = userRepository.findByGithubId(githubId).orElseGet(User::new);
         user.setGithubId(githubId);
         user.setGithubUsername(login);
         user.setDisplayName(name);
