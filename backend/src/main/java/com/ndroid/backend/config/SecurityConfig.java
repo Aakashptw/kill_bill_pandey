@@ -60,6 +60,7 @@ public class SecurityConfig {
     AuthenticationSuccessHandler oauth2SuccessHandler(@Value("${app.frontend-url}") String frontendUrl) {
         SimpleUrlAuthenticationSuccessHandler handler = new SimpleUrlAuthenticationSuccessHandler();
         handler.setDefaultTargetUrl(frontendUrl + "/auth/callback");
+        handler.setAlwaysUseDefaultTargetUrl(true);
         return handler;
     }
 

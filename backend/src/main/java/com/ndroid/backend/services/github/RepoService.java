@@ -9,6 +9,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ndroid.backend.dto.IndexStatusResponse;
 import com.ndroid.backend.dto.RepositoryResponse;
 import com.ndroid.backend.entity.Repository;
 import com.ndroid.backend.entity.User;

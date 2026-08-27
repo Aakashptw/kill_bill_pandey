@@ -1,5 +1,6 @@
 package com.ndroid.backend.config;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,12 +15,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class CorsConfig {
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowed.origins:}") String allowedOrigins) {
+    CorsConfigurationSource corsConfigurationSource(
+            @Value("${app.cors.allowed-origins:http://localhost:3000}") String allowedOrigins,
+            @Value("${app.frontend-url:http://localhost:3000}") String frontendUrl) {
         CorsConfiguration config = new CorsConfiguration();
-        List<String> origins = Arrays.stream((allowedOrigins == null ? "" : allowedOrigins).split(","))
+        List<String> origins = new ArrayList<>(Arrays.stream((allowedOrigins == null ? "" : allowedOrigins).split(","))
                 .map(String::trim)
                 .filter(s -> !s.isEmpty())
-                .toList();
+                .toList());
+        if (frontendUrl != null && !frontendUrl.isBlank() && origins.stream().noneMatch(frontendUrl::equalsIgnoreCase)) {
+            origins.add(frontendUrl.trim());
+        }
 
         config.setAllowedOrigins(origins);
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
